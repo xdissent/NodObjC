@@ -1,4 +1,5 @@
 var ffi = require('node-ffi')
+  , ref = require('ref')
   , assert = require('assert')
   , b = require('../../lib/core')
 
@@ -35,15 +36,15 @@ assert.ok(before.indexOf('NSString') < before.indexOf('NSMutableArray'))
 // we can sort, using a JavaScript function to do the sorting logic!!!
 // In this simple example we sort based on the length of the class name
 var callbackCount = 0
-var callback = new b.Callback([ 'int32', [ 'pointer', 'pointer', 'pointer' ]], cb)
+var callback = ffi.Callback('int32', [ 'pointer', 'pointer', 'pointer' ], cb)
 function cb (obj1, obj2, context) {
   callbackCount++
   var n1 = b.class_getName(obj1)
     , n2 = b.class_getName(obj2)
-  return n1 < n2
+  return n1 > n2 ? 1 : 0
 }
 
-msgSend4(instance, sortUsingFunction, callback.getPointer(), instance)
+msgSend4(instance, sortUsingFunction, callback, instance)
 
 
 // toString() after sort
@@ -57,14 +58,14 @@ function getTypes (method) {
     , types = []
     , numArgs = b.method_getNumberOfArguments(method)
     , rtnTypePtr = b.method_copyReturnType(method)
-    , rtnType = rtnTypePtr.getCString()
-  ffi.free(rtnTypePtr)
+    , rtnType = rtnTypePtr.readCString()
+  b.free(rtnTypePtr)
   types.push(rtnType)
   types.push(args)
   for (var i=0; i<numArgs; i++) {
     var argPtr = b.method_copyArgumentType(method, i)
-    args.push(argPtr.getCString())
-    ffi.free(argPtr)
+    args.push(argPtr.readCString())
+    b.free(argPtr)
   }
   return types
 }
