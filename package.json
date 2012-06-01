@@ -14,7 +14,10 @@
   , "ffi": "1"
   , "libxmljs": "0.5.x"
   , "ref": "0"
+  , "ref-array": "0"
+  , "ref-bitfield": "0"
   , "ref-struct": "0"
+  , "ref-union": "0"
   }
 , "devDependencies": {
     "dox": "0.3.x"
