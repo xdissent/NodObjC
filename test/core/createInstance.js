@@ -1,4 +1,4 @@
-var ffi = require('node-ffi')
+var ffi = require('ffi')
   , ref = require('ref')
   , assert = require('assert')
   , b = require('../../lib/core')
@@ -59,13 +59,13 @@ function getTypes (method) {
     , numArgs = b.method_getNumberOfArguments(method)
     , rtnTypePtr = b.method_copyReturnType(method)
     , rtnType = rtnTypePtr.readCString()
-  b.free(rtnTypePtr)
+  //b.free(rtnTypePtr)
   types.push(rtnType)
   types.push(args)
   for (var i=0; i<numArgs; i++) {
     var argPtr = b.method_copyArgumentType(method, i)
     args.push(argPtr.readCString())
-    b.free(argPtr)
+    //b.free(argPtr)
   }
   return types
 }

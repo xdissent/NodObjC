@@ -13,7 +13,7 @@ var alloc = b.sel_registerName('alloc')
   , addObject = b.sel_registerName('addObject:')
   , objectsPassingTest = b.sel_registerName('objectsPassingTest:')
 
-var msgSend = b.get_objc_msgSend([ '@', [ '@', ':' ] ])
+var msgSend = b.objc_msgSend()/*([ '@', [ '@', ':' ] ])*/
   , msgSend2 = b.get_objc_msgSend([ 'r*', [ '@', ':' ] ])
   , msgSend3 = b.get_objc_msgSend([ 'v', [ '@', ':', '^' ] ])
   , msgSend4 = b.get_objc_msgSend([ 'v', [ '@', ':', '@' ] ])

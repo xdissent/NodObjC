@@ -1,27 +1,25 @@
 var b = require('../../lib/core')
+  , ffi = require('ffi')
   , ref = require('ref')
   , assert = require('assert')
 
-
-b.dlopen('/System/Library/Frameworks/Foundation.framework/Foundation')
+// load the "Foundation" framework
+ffi.DynamicLibrary('/System/Library/Frameworks/Foundation.framework/Foundation')
 
 // First get the number of classes
 var numClasses = b.objc_getClassList(null, 0)
-//console.error('Number of classes: %d', numClasses)
 assert.ok(numClasses > 0)
+//console.error('Number of classes: %d', numClasses)
 
-if (numClasses > 0) {
-  var sizeofClass = ref.sizeof.pointer
-    , classes = new Buffer(sizeofClass * numClasses)
-    , cursor = classes
+var sizeofClass = ref.sizeof.pointer
+  , classes = new Buffer(sizeofClass * numClasses)
 
-  b.objc_getClassList(classes, numClasses)
+b.objc_getClassList(classes, numClasses)
 
-  for (var i=0; i<numClasses; i++) {
-    var c = cursor.readPointer(sizeofClass * i)
-    var name = b.class_getName(c)
-    assert.equal(typeof name, 'string')
-    assert.ok(name.length > 0)
-  }
-
+for (var i = 0; i < numClasses; i++) {
+  var c = classes.readPointer(sizeofClass * i)
+  var name = b.class_getName(c)
+  assert.equal(typeof name, 'string')
+  assert.ok(name.length > 0)
+  //console.error(i, ':', name)
 }
