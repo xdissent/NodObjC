@@ -21,5 +21,5 @@ for (var i = 0; i < numClasses; i++) {
   var name = b.class_getName(c)
   assert.equal(typeof name, 'string')
   assert.ok(name.length > 0)
-  //console.error(i, ':', name)
+  //console.error(i + ':', name)
 }
