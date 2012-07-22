@@ -27,7 +27,7 @@ var pool = msgSend(msgSend(NSAutoreleasePool, 'alloc'), 'init')
 var instance = msgSend(msgSend(NSMutableArray, 'alloc'), 'init')
 
 // log it
-console.log(instance)
+//console.log(instance)
 
 // add a couple objects to the array (Class instances in this case)
 msgSend3(instance, 'addObject:', NSString)
@@ -36,7 +36,7 @@ msgSend3(instance, 'addObject:', NSMutableArray)
 
 // toString() before sort
 var before = msgSend2(msgSend(instance, 'description'), 'UTF8String')
-console.log('before:', before)
+//console.log('before:', before)
 assert.ok(before.indexOf('NSString') < before.indexOf('NSMutableArray'))
 
 // we can sort, using a JavaScript function to do the sorting logic!!!
@@ -47,14 +47,16 @@ function cb (obj1, obj2, context) {
   callbackCount++
   var n1 = b.class_getName(obj1)
     , n2 = b.class_getName(obj2)
-  return n1 > n2 ? 1 : 0
+  if (n1 == n2) return 0
+  return n1 > n2 ? 1 : -1
 }
 
-msgSend4(instance, sortUsingFunction, callback, instance)
+console.log(instance, callback, instance)
+msgSend4(instance, 'sortUsingFunction:context:', callback, null)
 
 
 // toString() after sort
-var after = msgSend2(msgSend(instance, describe), UTF8String)
+var after = msgSend2(msgSend(instance, 'description'), 'UTF8String')
 assert.ok(after.indexOf('NSString') > after.indexOf('NSMutableArray'))
 
 
@@ -73,6 +75,7 @@ function getTypes (method) {
     args.push(argPtr.readCString())
     b.free(argPtr)
   }
+  console.log(types)
   return types
 }
 
