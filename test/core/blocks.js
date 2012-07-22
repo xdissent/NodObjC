@@ -1,5 +1,6 @@
 var b = require('../../lib/core')
   , ref = require('ref')
+  , ffi = require('ffi')
   , Struct = require('ref-struct')
   , assert = require('assert')
 
@@ -51,7 +52,7 @@ var __block_descriptor_1 = Struct({
 
 // Enumerate using a block.
 var gotCallback = false
-var blockFunc = b.Callback('int8', [ POINTER, POINTER, POINTER ], function (block, obj, stopPtr) {
+var blockFunc = ffi.Callback('int8', [ POINTER, POINTER, POINTER ], function (block, obj, stopPtr) {
   //console.error('inside block!')
   //console.error("Enumerate: %d!", index)
   gotCallback = true
@@ -65,7 +66,7 @@ var bd = new __block_descriptor_1
 bd.reserved = 0
 bd.Block_size = __block_literal_1.size
 
-bl.isa = b.dlopen().get('_NSConcreteGlobalBlock')
+bl.isa = ffi.DynamicLibrary().get('_NSConcreteGlobalBlock')
 //console.log('isa:', bl.isa)
 bl.flags = (1<<29)
 //console.log('flags:', bl.flags)
