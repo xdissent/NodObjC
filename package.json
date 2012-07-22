@@ -11,7 +11,7 @@
   }
 , "dependencies": {
     "debug": "*"
-  , "ffi": "1"
+  , "ffi": "~1.0.5"
   , "libxmljs": "0.5.x"
   , "ref": "0"
   , "ref-array": "0"
