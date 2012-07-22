@@ -53,20 +53,21 @@ assert.ok(after.indexOf('NSString') > after.indexOf('NSMutableArray'))
 
 
 function getTypes (method) {
-  if (method.isNull()) throw new Error('bad pointer!')
+  if (!method) throw new Error('bad pointer!')
   var args = []
     , types = []
     , numArgs = b.method_getNumberOfArguments(method)
     , rtnTypePtr = b.method_copyReturnType(method)
     , rtnType = rtnTypePtr.readCString()
-  //b.free(rtnTypePtr)
+  b.free(rtnTypePtr)
   types.push(rtnType)
   types.push(args)
   for (var i=0; i<numArgs; i++) {
     var argPtr = b.method_copyArgumentType(method, i)
     args.push(argPtr.readCString())
-    //b.free(argPtr)
+    b.free(argPtr)
   }
+  console.error(types)
   return types
 }
 
