@@ -3,34 +3,40 @@ var ffi = require('ffi')
   , assert = require('assert')
   , b = require('../../lib/core')
 
+// get Class instances
 var NSMutableArray = b.objc_getClass('NSMutableArray')
   , NSString = b.objc_getClass('NSString')
   , NSAutoreleasePool = b.objc_getClass('NSAutoreleasePool')
 
-var alloc = b.sel_registerName('alloc')
-  , init = b.sel_registerName('init')
-  , describe = b.sel_registerName('description')
-  , UTF8String = b.sel_registerName('UTF8String')
-  , addObject = b.sel_registerName('addObject:')
-  , sortUsingFunction = b.sel_registerName('sortUsingFunction:context:')
-  , UTF8StringMethod = b.class_getInstanceMethod(NSString, UTF8String)
-  , allocMethod = b.class_getClassMethod(NSMutableArray, alloc)
-  , addObjectMethod = b.class_getInstanceMethod(NSMutableArray, addObject)
-  , sufMethod = b.class_getInstanceMethod(NSMutableArray, sortUsingFunction)
+// get Method instances
+var UTF8StringMethod = b.class_getInstanceMethod(NSString, 'UTF8String')
+  , allocMethod = b.class_getClassMethod(NSMutableArray, 'alloc')
+  , addObjectMethod = b.class_getInstanceMethod(NSMutableArray, 'addObject:')
+  , sufMethod = b.class_getInstanceMethod(NSMutableArray, 'sortUsingFunction:context:')
 
+// get the various objc_msgSend() proxy functions
 var msgSend = b.get_objc_msgSend(getTypes(allocMethod))
   , msgSend2 = b.get_objc_msgSend(getTypes(UTF8StringMethod))
   , msgSend3 = b.get_objc_msgSend(getTypes(addObjectMethod))
   , msgSend4 = b.get_objc_msgSend(getTypes(sufMethod))
-  , pool = msgSend(msgSend(NSAutoreleasePool, alloc), init)
-  , instance = msgSend(msgSend(NSMutableArray, alloc), init)
 
-msgSend3(instance, addObject, NSString)
-msgSend3(instance, addObject, NSMutableArray)
+// create an NSAutoreleasePool instance
+var pool = msgSend(msgSend(NSAutoreleasePool, 'alloc'), 'init')
+
+// create an NSMutableArray instance
+var instance = msgSend(msgSend(NSMutableArray, 'alloc'), 'init')
+
+// log it
+console.log(instance)
+
+// add a couple objects to the array (Class instances in this case)
+msgSend3(instance, 'addObject:', NSString)
+msgSend3(instance, 'addObject:', NSMutableArray)
 
 
 // toString() before sort
-var before = msgSend2(msgSend(instance, describe), UTF8String)
+var before = msgSend2(msgSend(instance, 'description'), 'UTF8String')
+console.log('before:', before)
 assert.ok(before.indexOf('NSString') < before.indexOf('NSMutableArray'))
 
 // we can sort, using a JavaScript function to do the sorting logic!!!
@@ -67,7 +73,6 @@ function getTypes (method) {
     args.push(argPtr.readCString())
     b.free(argPtr)
   }
-  console.error(types)
   return types
 }
 
