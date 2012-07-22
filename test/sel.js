@@ -14,5 +14,5 @@ assert.equal(1, Object.keys(SEL.cache).length)
 // should return a cached reference
 assert.strictEqual(swus, SEL.toSEL(sel))
 
-// should match the input string when "toString()" is called
-assert.equal(sel, SEL.toString(swus))
+// should match the input string when "toJsString()" is called
+assert.equal(sel, SEL.toJsString(swus))
