@@ -3,6 +3,7 @@ var b = require('../../lib/core')
   , ref = require('ref')
   , assert = require('assert')
   , className = 'NSMutableArray'
+  , free = require('../../lib/libc').free
 
 var c = b.objc_getClass(className)
 
@@ -25,7 +26,7 @@ for (var i = 0; i < numMethods; i++) {
     , numArgs = b.method_getNumberOfArguments(cur)
     , r = b.method_copyReturnType(cur)
     , rtn = r.readCString()
-  b.free(r)
+  free(r)
   assert.equal(typeof rtn, 'string')
   assert.ok(numArgs >= 2)
   //console.error('  '+name)
@@ -34,13 +35,13 @@ for (var i = 0; i < numMethods; i++) {
   for (var j = 2; j < numArgs; j++) {
     var a = b.method_copyArgumentType(cur, j)
       , s = a.readCString()
-    b.free(a)
+    free(a)
     assert.equal(typeof s, 'string')
     assert.ok(s.length > 0)
     //console.error('      Arg %d: %s', j-2, s)
   }
 }
-b.free(methods)
+free(methods)
 
 
 // Walk the inheritance chain

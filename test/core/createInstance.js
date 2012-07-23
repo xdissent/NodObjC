@@ -2,6 +2,7 @@ var ffi = require('ffi')
   , ref = require('ref')
   , assert = require('assert')
   , b = require('../../lib/core')
+  , free = require('../../lib/libc').free
 
 // get Class instances
 var NSMutableArray = b.objc_getClass('NSMutableArray')
@@ -67,13 +68,13 @@ function getTypes (method) {
     , numArgs = b.method_getNumberOfArguments(method)
     , rtnTypePtr = b.method_copyReturnType(method)
     , rtnType = rtnTypePtr.readCString()
-  b.free(rtnTypePtr)
+  free(rtnTypePtr)
   types.push(rtnType)
   types.push(args)
   for (var i=0; i<numArgs; i++) {
     var argPtr = b.method_copyArgumentType(method, i)
     args.push(argPtr.readCString())
-    b.free(argPtr)
+    free(argPtr)
   }
   //console.log(types)
   return types

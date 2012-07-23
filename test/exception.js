@@ -17,6 +17,7 @@ try {
   assert.equal('NSInvalidArgumentException', e('name'))
   assert.ok(e.stack.length > 0)
   assert.ok(e.message.length > 0)
+  console.log(e.stack)
 }
 
 try {
