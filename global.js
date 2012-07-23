@@ -1,2 +1,2 @@
 module.exports = require('./')
-global.__proto__ = require('./lib/global')
+global.__proto__ = require('./lib/core')
