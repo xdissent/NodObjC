@@ -51,7 +51,7 @@ function cb (obj1, obj2, context) {
   return n1 > n2 ? 1 : -1
 }
 
-console.log(instance, callback, instance)
+//console.log(instance, callback, instance)
 msgSend4(instance, 'sortUsingFunction:context:', callback, null)
 
 
@@ -75,7 +75,7 @@ function getTypes (method) {
     args.push(argPtr.readCString())
     b.free(argPtr)
   }
-  console.log(types)
+  //console.log(types)
   return types
 }
 
