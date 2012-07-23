@@ -4,7 +4,7 @@ var types = require('../lib/types')
 
 test('v@:'
   , [ 'v', [ '@', ':' ] ]
-  , [ 'void', [ 'pointer', 'pointer' ] ]
+  , [ 'void', [ 'id', 'SEL' ] ]
 )
 
 // test types.map()
@@ -15,7 +15,7 @@ assert.equal(types.map('^^{__CFData}'), 'pointer')
 
 test('Q40@0:8^{?=Q^@^Q[5Q]}16^@24Q32'
   , [ 'Q', [ '@', ':', '^{?=Q^@^Q[5Q]}', '^@', 'Q' ] ]
-  , [ 'ulonglong', [ 'pointer', 'pointer', 'pointer', 'pointer', 'ulonglong'] ]
+  , [ 'ulonglong', [ 'id', 'SEL', 'pointer', 'pointer', 'ulonglong'] ]
 )
 
 test('@68@0:8{CGRect={CGPoint=dd}{CGSize=dd}}16Q48Q56c64'
@@ -30,6 +30,8 @@ function test (type, rtn, ffi) {
   assert.deepEqual(parsed, rtn)
   if (!ffi) return
   var f = types.mapArray(parsed)
+  //console.log(f)
+  f = [ f[0].name, f[1].map(function (t) { return t.name || t }) ]
   //console.log('FFI Types:\t'+inspect(f, true, 10, true)+'\n')
   assert.deepEqual(f, ffi)
 }
