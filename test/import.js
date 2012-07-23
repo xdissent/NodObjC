@@ -1,5 +1,5 @@
 var $ = require('../')
-  , _global = require('../lib/global')
+  , _global = require('../lib/core')
   , assert = require('assert')
 
 var s1 = s2 = size()
