@@ -1,9 +1,9 @@
 
 var assert = require('assert')
 
-require('../../').global()
+require('../../global')
 
-importFramework('Foundation')
+framework('Foundation')
 
 var pool = NSAutoreleasePool('alloc')('init')
   , counter = 0
