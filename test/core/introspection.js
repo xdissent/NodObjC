@@ -50,11 +50,11 @@ var superclass = c
 //console.error('\nWalking inheritance chain:')
 //console.error('  %s', b.class_getName(superclass))
 do {
-  process.stderr.write('  ')
+  //process.stderr.write('  ')
   i++
   superclass = b.class_getSuperclass(superclass)
   for (var j = 0; j < i; j++) {
-    process.stderr.write('  ')
+    //process.stderr.write('  ')
   }
   var name = b.class_getName(superclass)
   assert.equal(typeof name, 'string')
