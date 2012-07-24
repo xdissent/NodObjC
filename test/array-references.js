@@ -1,5 +1,6 @@
+
+var assert = require('assert')
 var $ = require('../')
-  , assert = require('assert')
 
 $.import('Foundation')
 var pool = $.NSAutoreleasePool('alloc')('init');
@@ -9,5 +10,5 @@ array('addObject', $.NSArray);
 
 var nsarray = array('objectAtIndex', 0);
 
-assert.equal(nsarray.pointer.address, $.NSArray.pointer.address)
-assert.ok(nsarray === $.NSArray, 'fails strict equality test')
+assert.equal(nsarray.pointer.address(), $.NSArray.pointer.address())
+assert.strictEqual(nsarray, $.NSArray, 'fails strict equality test')
