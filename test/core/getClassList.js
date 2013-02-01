@@ -1,4 +1,5 @@
 var b = require('../../lib/core')
+  , ref = require('ref')
   , assert = require('assert')
 
 
@@ -11,17 +12,15 @@ assert.ok(numClasses > 0)
 
 if (numClasses > 0) {
   var sizeofClass = 8 // need a good way to sizeof for real
-    , classes = new b.Pointer(sizeofClass * numClasses)
-    , cursor = classes
+    , classes = new Buffer(sizeofClass * numClasses)
 
   b.objc_getClassList(classes, numClasses)
 
   for (var i=0; i<numClasses; i++) {
-    var c = cursor.getPointer()
+    var c = classes.readPointer(i * ref.sizeof.pointer)
       , name = b.class_getName(c)
     assert.equal(typeof name, 'string')
     assert.ok(name.length > 0)
-    cursor = cursor.seek(sizeofClass)
   }
 
 }
