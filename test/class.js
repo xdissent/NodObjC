@@ -37,7 +37,11 @@ describe('Objective-C Classes', function () {
     it('should return the "metaclass" Class for `getClass()`', function () {
       var meta = NSObject.getClass();
       assert(meta.isMetaClass());
-      console.log(meta);
+    });
+
+    it('should contain a ◆ char in the `toString()` output', function () {
+      var meta = NSObject.getClass();
+      assert.notEqual(-1, meta.toString().indexOf('◆'));
     });
 
   });
