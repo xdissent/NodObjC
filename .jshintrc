@@ -1,0 +1,9 @@
+{
+  "asi": true,
+  "es5": true,
+  "supernew": true,
+  "laxcomma": true,
+  "node": true,
+  "proto": true,
+  "strict": false
+}
