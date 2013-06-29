@@ -23,6 +23,30 @@ describe('Objective-C Classes', function () {
     assert(NSObject.getInstanceSize() > 0);
   });
 
+  describe('Runtime-defined Classes', function () {
+    var RTDClass = $.NSObject.extend('RTDClass');
+    RTDClass.addMethod('testTrue', 'c@:', function() { return true; });
+    RTDClass.addMethod('testFalse', 'c@:', function() { return false; });
+    RTDClass.addMethod('testIvar', '@@:', function(self) {
+      return self.ivar('test');
+    });
+    RTDClass.addIvar('test', '@')
+    RTDClass.register();
+
+    it('should send messages', function () {
+      var r = RTDClass('alloc')('init');
+      assert.equal(r('testTrue'), 1);
+      assert.equal(r('testFalse'), 0);
+      assert.equal(r('testIvar'), null);
+    });
+
+    it('should support ivars', function () {
+      var r = RTDClass('alloc')('init');
+      r.ivar('test', $('something'));
+      assert.equal(r.ivar('test').toString(), 'something');
+      assert.equal(r('testIvar').toString(), 'something');
+    });
+  });
 
   describe('Subclasses', function () {
 
